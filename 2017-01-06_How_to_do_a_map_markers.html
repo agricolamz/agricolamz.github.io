@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Как сложно делать аннотацию к карте</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-0.8/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-0.7.3/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-0.7.3/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-1.0.1/leaflet.js"></script>
+<script src="site_libs/leaflet-providers-1.0.27/leaflet-providers.js"></script>
+<script src="site_libs/leaflet-providers-plugin-1.0.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 54px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+
+.section h2 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h3 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h4 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h5 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+.section h6 {
+  padding-top: 59px;
+  margin-top: -59px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Linguistics, maps and R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    posts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="2017-01-06_How_to_do_a_map_markers.html">Как сложно делать аннотацию к карте</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Как сложно делать аннотацию к карте</h1>
+
+</div>
+
+
+<p>Мой первый пост будет посвящен работе с пакетом <code>lingtypology</code>, который я недавно <a href="https://CRAN.R-project.org/package=lingtypology">закоммитил в CRAN</a>. Скоро пройдет месяц и я смогу закоммитить пакет снова с исправлениями и новыми возможностями.</p>
+<div class="section level1">
+<h1><span class="header-section-number">1</span> Введение</h1>
+<p>В пакете <code>lingtypology</code> мне захотелось нарисовать карту. Однако на этот раз я хочу приблизиться к формату, который можно публиковать в статье. Так что я выбираю черно-белую подложку.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lingtypology) 
+
+<span class="co"># закачаем данные</span>
+df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/data.csv&quot;</span>)
+
+<span class="co"># нарисуем при помощи пакета lingtypology</span>
+<span class="kw">map.feature</span>(df$language,
+            <span class="dt">features =</span> df$languoid,
+            <span class="dt">latitude =</span> df$latitude,
+            <span class="dt">longitude =</span> df$longitude,
+            <span class="dt">radius =</span> <span class="dv">8</span>,
+            <span class="dt">color =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>,<span class="st">&quot;grey&quot;</span>),
+            <span class="dt">stroke.features =</span> df$languoid,
+            <span class="dt">stroke.color =</span> <span class="st">&quot;black&quot;</span>,
+            <span class="dt">stroke.legend =</span> F,
+            <span class="dt">tile =</span> <span class="st">&quot;OpenStreetMap.BlackAndWhite&quot;</span>)</code></pre></div>
+<div id="htmlwidget-018348e742e188bff812" style="width:595.2px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-018348e742e188bff812">{"x":{"calls":[{"method":"addProviderTiles","args":["OpenStreetMap.BlackAndWhite",null,null,{"errorTileUrl":"","noWrap":false,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false}]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],10.925,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":"black","weight":5,"opacity":0.5,"fill":true,"fillColor":"black","fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.5,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.2,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],8,null,["Бесленеевский (5)","Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Бесленеевский (5)","Бесленеевский (5)","Бесленеевский (5)","Кубанский (3)","Кубанский (3)","Кубанский (3)"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addLegend","args":[{"colors":["#FFFFFF","#000000","#BEBEBE"],"labels":["Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубанский (3)"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":null,"extra":null,"layerId":null,"className":"info legend"}]}],"limits":{"lat":[43.863056,45.054167],"lng":[39.946389,41.935]}},"evals":[],"jsHooks":[]}</script>
+<p>В целом, конечно, отлично, но мы же хотим знать что это за точки, ведь если мы опубликуем эту карту в статье никто не сможет тыкать в них. К тому же в январе я добавил в пакет <code>lingtypology</code> аргументы, позволяющие добавлять изображения. Все необходимые названия селений уже записаны в файле:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(df$village)</code></pre></div>
+<pre><code>## [1] Вако-Жиле       Бесленей        Хабез           Новохумаринский
+## [5] Абазакт         Псауче-Дахэ    
+## 22 Levels: Абазакт Адыгэ-Хабль Али-Бердуковский Баралки ... Эрсакон</code></pre>
+<p>Нужно получить список картинок (например, .png, желательно, прозрачных), содержащих названия всех селений и ничего другого. После этого можно будет выложить их в интернет и дать ссылки для пакета <code>lingtypology</code>.</p>
+</div>
+<div class="section level1">
+<h1><span class="header-section-number">2</span> Как?</h1>
+<p>У меня было несколько вариантов:</p>
+<ul>
+<li>первым вариантом было не вылезать из R и сделать графики без осей и т. п., но с текстом. Это можно сделать и в <code>base</code>, и в <code>ggplot</code>, хотя идея делать графики, а потом их обрезать меня пугала. Как я автоматически пойму насколько нужно обрезать? Тем более, что буквы имеют подстрочные элементы (например, у или р), которые не надо обрезать, в то время, как это пространство у слов, не содержащих подстрочные элементы следует обрезать.</li>
+<li>в LaTeX есть тип документов <code>standalone</code>, который делает .pdf, содержащий исключительно написанное или нарисованное, без всяких рамок и прочего. Правда потом все равно придется делать из .pdf .png, но это-то R умеет.</li>
+</ul>
+<p>Наверняка, есть способ более быстрый (совершенно точно), элегантный и прочее и прочее… Однако я решил использовать LaTeX, точнее его разновидность XeLaTeX. В результате я могу контролировать даже шрифт получивших надписей.</p>
+</div>
+<div id="r-latex-r" class="section level1">
+<h1><span class="header-section-number">3</span> R &gt; Latex &gt; R</h1>
+<p>Для начала я решил создать векторы, содержащие в качестве строки XeLaTeX-код (все бэкслэши приходится экранировать):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">latex &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;</span>
+<span class="ch">\\</span><span class="st">documentclass{standalone}</span>
+<span class="ch">\\</span><span class="st">usepackage[english,russian]{babel}</span>
+<span class="ch">\\</span><span class="st">usepackage{fontspec}</span>
+<span class="ch">\\</span><span class="st">defaultfontfeatures{Ligatures={TeX},Renderer=Basic}</span>
+<span class="ch">\\</span><span class="st">setmainfont[Ligatures={TeX,Historic},</span>
+<span class="st">  SmallCapsFont={Brill},</span>
+<span class="st">    SmallCapsFeatures={Letters=SmallCaps}]{Brill}</span>
+<span class="ch">\\</span><span class="st">setsansfont{Brill}</span>
+<span class="ch">\\</span><span class="st">begin{document}&quot;</span>,
+df$village,
+<span class="st">&quot;</span><span class="ch">\\</span><span class="st">end{document}&quot;</span>)
+latex[<span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] &quot;\n\\documentclass{standalone}\n\\usepackage[english,russian]{babel}\n\\usepackage{fontspec}\n\\defaultfontfeatures{Ligatures={TeX},Renderer=Basic}\n\\setmainfont[Ligatures={TeX,Historic},\n  SmallCapsFont={Brill},\n\tSmallCapsFeatures={Letters=SmallCaps}]{Brill}\n\\setsansfont{Brill}\n\\begin{document} Вако-Жиле \\end{document}&quot;</code></pre>
+<p>Теперь нужно создать все эти XeLaTeX файлы</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;/home/agricolamz/_DATA/OneDrive1/_Work/Articles/2017 II Kuban phonology/map/names&quot;</span>)
+<span class="kw">mapply</span>(function(x, y){<span class="kw">write</span>(x,<span class="dt">file =</span> <span class="kw">paste0</span>(y, <span class="st">&quot;.tex&quot;</span>))},
+       latex, <span class="co"># аргумент x</span>
+       df$village) <span class="co"># аргумент y</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> <span class="st">&quot;/home/agricolamz/_DATA/OneDrive1/_Work/Articles/2017 II Kuban phonology/map/names&quot;</span>
+<span class="kw">ls</span></code></pre></div>
+<pre><code>## How_to_create_village_names.html
+## How_to_create_village_names.Rmd
+## Абазакт.pdf
+## Абазакт.png
+## Абазакт.tex
+## Адыгэ-Хабль.pdf
+## Адыгэ-Хабль.png
+## Адыгэ-Хабль.tex
+## Али-Бердуковский.pdf
+## Али-Бердуковский.png
+## Али-Бердуковский.tex
+## Баралки.pdf
+## Баралки.png
+## Баралки.tex
+## Бесленей.pdf
+## Бесленей.png
+## Бесленей.tex
+## Блечепсин.pdf
+## Блечепсин.png
+## Блечепсин.tex
+## Вако-Жиле.pdf
+## Вако-Жиле.png
+## Вако-Жиле.tex
+## Жако.pdf
+## Жако.png
+## Жако.tex
+## Зеюко.pdf
+## Зеюко.png
+## Зеюко.tex
+## Инжичишхо.pdf
+## Инжичишхо.png
+## Инжичишхо.tex
+## Коноково.pdf
+## Коноково.png
+## Коноково.tex
+## Кошехабль.pdf
+## Кошехабль.png
+## Кошехабль.tex
+## Кош-Хабль.pdf
+## Кош-Хабль.png
+## Кош-Хабль.tex
+## Кургоковское.pdf
+## Кургоковское.png
+## Кургоковское.tex
+## Малый-Зеленчук.pdf
+## Малый-Зеленчук.png
+## Малый-Зеленчук.tex
+## Новохумаринский.pdf
+## Новохумаринский.png
+## Новохумаринский.tex
+## Псауче-Дахэ.pdf
+## Псауче-Дахэ.png
+## Псауче-Дахэ.tex
+## Уляп.pdf
+## Уляп.png
+## Уляп.tex
+## Хабез.pdf
+## Хабез.png
+## Хабез.tex
+## Ходзь.pdf
+## Ходзь.png
+## Ходзь.tex
+## Хумара.pdf
+## Хумара.png
+## Хумара.tex
+## Эрсакон.pdf
+## Эрсакон.png
+## Эрсакон.tex</code></pre>
+<p>Скомпелируем все эти файлы .tex (если в каком-то из названий есть пробел, то у меня все умирает и не работает):</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> <span class="st">&quot;/home/agricolamz/_DATA/OneDrive1/_Work/Articles/2017 II Kuban phonology/map/names&quot;</span><span class="kw">;</span> <span class="kw">for</span> <span class="kw">i</span> in *.tex<span class="kw">;</span> <span class="kw">do</span> <span class="kw">xelatex</span> <span class="ot">$i</span><span class="kw">;done</span>
+<span class="co"># И приберемся за собой...</span>
+<span class="kw">rm</span> *.aux
+<span class="kw">rm</span> *.log
+<span class="kw">rm</span> *.tex</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> <span class="st">&quot;/home/agricolamz/_DATA/OneDrive1/_Work/Articles/2017 II Kuban phonology/map/names&quot;</span>
+<span class="kw">ls</span></code></pre></div>
+<pre><code>## How_to_create_village_names.html
+## How_to_create_village_names.Rmd
+## Абазакт.pdf
+## Абазакт.png
+## Адыгэ-Хабль.pdf
+## Адыгэ-Хабль.png
+## Али-Бердуковский.pdf
+## Али-Бердуковский.png
+## Баралки.pdf
+## Баралки.png
+## Бесленей.pdf
+## Бесленей.png
+## Блечепсин.pdf
+## Блечепсин.png
+## Вако-Жиле.pdf
+## Вако-Жиле.png
+## Жако.pdf
+## Жако.png
+## Зеюко.pdf
+## Зеюко.png
+## Инжичишхо.pdf
+## Инжичишхо.png
+## Коноково.pdf
+## Коноково.png
+## Кошехабль.pdf
+## Кошехабль.png
+## Кош-Хабль.pdf
+## Кош-Хабль.png
+## Кургоковское.pdf
+## Кургоковское.png
+## Малый-Зеленчук.pdf
+## Малый-Зеленчук.png
+## Новохумаринский.pdf
+## Новохумаринский.png
+## Псауче-Дахэ.pdf
+## Псауче-Дахэ.png
+## Уляп.pdf
+## Уляп.png
+## Хабез.pdf
+## Хабез.png
+## Ходзь.pdf
+## Ходзь.png
+## Хумара.pdf
+## Хумара.png
+## Эрсакон.pdf
+## Эрсакон.png</code></pre>
+<p>Последний шаг: сконвертируем получившиеся .pdf в .png:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;/home/agricolamz/_DATA/OneDrive1/_Work/Articles/2017 II Kuban phonology/map/names&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;animation&quot;</span>)
+<span class="kw">sapply</span>(df$village, function(x){
+  <span class="kw">im.convert</span>(<span class="kw">paste0</span>(x, <span class="st">&quot;.pdf&quot;</span>),
+             <span class="kw">paste0</span>(x, <span class="st">&quot;.png&quot;</span>),
+             <span class="dt">extra.opts=</span><span class="st">&quot;-density 400&quot;</span>)})</code></pre></div>
+<p>Теперь я залью файлы в интернет и построю карту:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Вектор с адресами файлов в интернете</span>
+df$url &lt;-<span class="st"> </span><span class="kw">paste0</span>(
+  <span class="st">&quot;http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/&quot;</span>,
+  df$village,
+  <span class="st">&quot;.png&quot;</span>)
+
+<span class="co"># С пробелами беда, их надо было убрать еще раньше</span>
+df$url[<span class="dv">8</span>] &lt;-<span class="st"> </span><span class="kw">paste0</span>(
+  <span class="st">&quot;http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/&quot;</span>,
+  <span class="st">&quot;Малый-Зеленчук&quot;</span>,
+  <span class="st">&quot;.png&quot;</span>)
+
+<span class="co"># карта</span>
+<span class="kw">library</span>(leaflet); <span class="kw">library</span>(lingtypology) 
+<span class="kw">map.feature</span>(df$language,
+            <span class="dt">features =</span> df$languoid,
+            <span class="dt">latitude =</span> df$latitude,
+            <span class="dt">longitude =</span> df$longitude,
+            <span class="dt">radius =</span> <span class="dv">8</span>,
+            <span class="dt">color =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>,<span class="st">&quot;grey&quot;</span>),
+            <span class="dt">stroke.features =</span> df$languoid,
+            <span class="dt">stroke.color =</span> <span class="st">&quot;black&quot;</span>,
+            <span class="dt">stroke.legend =</span> F,
+            <span class="dt">popup =</span> df$village,
+            <span class="dt">image.url =</span> df$url,
+            <span class="dt">image.height =</span> <span class="dv">15</span>,
+            <span class="dt">image.width =</span> <span class="dv">10</span>*<span class="kw">nchar</span>(<span class="kw">as.character</span>(df$village)),
+            <span class="dt">tile =</span> <span class="st">&quot;OpenStreetMap.BlackAndWhite&quot;</span>)</code></pre></div>
+<div id="htmlwidget-2242f78a00a07f972321" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2242f78a00a07f972321">{"x":{"calls":[{"method":"addProviderTiles","args":["OpenStreetMap.BlackAndWhite",null,null,{"errorTileUrl":"","noWrap":false,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false}]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],10.925,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":"black","weight":5,"opacity":0.5,"fill":true,"fillColor":"black","fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Вако-Жиле","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Бесленей","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хабез","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Новохумаринский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Абазакт","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Псауче-Дахэ","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кош-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Малый-Зеленчук","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Зеюко","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Инжичишхо","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Жако","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Али-Бердуковский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Эрсакон","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хумара","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Баралки","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Адыгэ-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Коноково","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кургоковское","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Уляп","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Блечепсин","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Ходзь","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кошехабль"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.5,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Вако-Жиле","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Бесленей","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хабез","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Новохумаринский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Абазакт","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Псауче-Дахэ","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кош-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Малый-Зеленчук","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Зеюко","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Инжичишхо","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Жако","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Али-Бердуковский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Эрсакон","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хумара","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Баралки","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Адыгэ-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Коноково","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кургоковское","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Уляп","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Блечепсин","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Ходзь","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кошехабль"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.2,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Вако-Жиле","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Бесленей","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хабез","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Новохумаринский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Абазакт","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Псауче-Дахэ","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кош-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Малый-Зеленчук","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Зеюко","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Инжичишхо","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Жако","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Али-Бердуковский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Эрсакон","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хумара","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Баралки","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Адыгэ-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Коноково","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кургоковское","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Уляп","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Блечепсин","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Ходзь","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кошехабль"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],8,null,["Бесленеевский (5)","Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Бесленеевский (5)","Бесленеевский (5)","Бесленеевский (5)","Кубанский (3)","Кубанский (3)","Кубанский (3)"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Вако-Жиле","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Бесленей","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хабез","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Новохумаринский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Абазакт","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Псауче-Дахэ","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кош-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Малый-Зеленчук","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Зеюко","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Инжичишхо","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Жако","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Али-Бердуковский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Эрсакон","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хумара","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Баралки","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Адыгэ-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Коноково","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кургоковское","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Уляп","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Блечепсин","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Ходзь","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кошехабль"]]},{"method":"addLegend","args":[{"colors":["#FFFFFF","#000000","#BEBEBE"],"labels":["Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубанский (3)"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":null,"extra":null,"layerId":null,"className":"info legend"}]},{"method":"addMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],{"iconUrl":{"data":["http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Вако-Жиле.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Бесленей.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Хабез.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Новохумаринский.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Абазакт.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Псауче-Дахэ.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кош-Хабль.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Малый-Зеленчук.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Зеюко.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Инжичишхо.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Жако.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Али-Бердуковский.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Эрсакон.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Хумара.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Баралки.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Адыгэ-Хабль.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Коноково.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кургоковское.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Уляп.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Блечепсин.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Ходзь.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кошехабль.png"],"index":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]},"iconWidth":[90,80,50,150,70,110,90,140,50,90,40,160,70,60,70,110,80,120,40,90,50,90],"iconHeight":15,"iconAnchorX":-0,"iconAnchorY":0},null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Вако-Жиле","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Бесленей","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хабез","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Новохумаринский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Абазакт","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Псауче-Дахэ","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кош-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Малый-Зеленчук","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Зеюко","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Инжичишхо","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Жако","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Али-Бердуковский","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Эрсакон","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Хумара","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Баралки","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Адыгэ-Хабль","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Коноково","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кургоковское","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Уляп","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Блечепсин","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Ходзь","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>Кошехабль"],null,null]}],"limits":{"lat":[43.863056,45.054167],"lng":[39.946389,41.935]}},"evals":[],"jsHooks":[]}</script>
+<p>Дальше осталось вручную подвести каждый сдвиг названия относительно точки:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df$x.shift[<span class="dv">6</span>] &lt;-<span class="st"> </span><span class="dv">20</span>
+<span class="kw">map.feature</span>(df$language,
+            <span class="dt">features =</span> df$languoid,
+            <span class="dt">latitude =</span> df$latitude,
+            <span class="dt">longitude =</span> df$longitude,
+            <span class="dt">radius =</span> <span class="dv">8</span>,
+            <span class="dt">color =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;black&quot;</span>,<span class="st">&quot;grey&quot;</span>),
+            <span class="dt">stroke.features =</span> df$languoid,
+            <span class="dt">stroke.color =</span> <span class="st">&quot;black&quot;</span>,
+            <span class="dt">stroke.legend =</span> F,
+            <span class="dt">image.url =</span> df$url,
+            <span class="dt">image.height =</span> <span class="dv">11</span>*df$font.size,
+  <span class="co"># Ширина изображения должна зависеть от количества символов</span>
+            <span class="dt">image.width =</span> <span class="dv">10</span>*<span class="kw">nchar</span>(<span class="kw">as.character</span>(df$village)),
+            <span class="dt">image.X.shift =</span> df$x.shift, <span class="co"># подобранные значения</span>
+            <span class="dt">image.Y.shift =</span> df$y.shift, <span class="co"># подобранные значения</span>
+            <span class="dt">tile =</span> <span class="st">&quot;OpenStreetMap.BlackAndWhite&quot;</span>)</code></pre></div>
+<div id="htmlwidget-114a0ae357bbff0bcd7f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-114a0ae357bbff0bcd7f">{"x":{"calls":[{"method":"addProviderTiles","args":["OpenStreetMap.BlackAndWhite",null,null,{"errorTileUrl":"","noWrap":false,"zIndex":null,"unloadInvisibleTiles":null,"updateWhenIdle":null,"detectRetina":false,"reuseTiles":false}]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],10.925,null,null,{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":"black","weight":5,"opacity":0.5,"fill":true,"fillColor":"black","fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.5,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],9.2,null,["Бесленеевский","Бесленеевский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Кубано-Зеленчукский","Бесленеевский","Бесленеевский","Бесленеевский","Кубанский","Кубанский","Кубанский"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addCircleMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],8,null,["Бесленеевский (5)","Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Кубано-Зеленчукский (14)","Бесленеевский (5)","Бесленеевский (5)","Бесленеевский (5)","Кубанский (3)","Кубанский (3)","Кубанский (3)"],{"lineCap":null,"lineJoin":null,"clickable":true,"pointerEvents":null,"className":"","stroke":false,"color":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FFFFFF","#FFFFFF","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#FFFFFF","#FFFFFF","#FFFFFF","#BEBEBE","#BEBEBE","#BEBEBE"],"fillOpacity":1,"dashArray":null},null,null,["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"]]},{"method":"addLegend","args":[{"colors":["#FFFFFF","#000000","#BEBEBE"],"labels":["Бесленеевский (5)","Кубано-Зеленчукский (14)","Кубанский (3)"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":null,"extra":null,"layerId":null,"className":"info legend"}]},{"method":"addMarkers","args":[[44.300777,44.246111,44.042366,44.221558,44.253272,44.206622,44.139951,44.400833,44.115278,44.1984238,43.959349,43.988333,44.431293,43.863056,44.350776,44.331111,44.86152,44.839167,45.054167,44.821667,44.519722,44.9],[41.742693,41.741389,41.764098,41.899453,41.900047,41.87764,41.853875,41.935,41.828056,41.6999648,41.743847,41.738889,41.763092,41.913472,41.801334,41.934722,41.335,41.486111,39.946389,40.501667,40.710278,40.483],{"iconUrl":{"data":["http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Вако-Жиле.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Бесленей.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Хабез.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Новохумаринский.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Абазакт.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Псауче-Дахэ.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кош-Хабль.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Малый-Зеленчук.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Зеюко.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Инжичишхо.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Жако.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Али-Бердуковский.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Эрсакон.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Хумара.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Баралки.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Адыгэ-Хабль.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Коноково.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кургоковское.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Уляп.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Блечепсин.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Ходзь.png","http://web-corpora.net/~agricolamz/maps/2016%20Kuban%20article/Кошехабль.png"],"index":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]},"iconWidth":[90,80,50,150,70,110,90,140,50,90,40,160,70,60,70,110,80,120,40,90,50,90],"iconHeight":[11,11,11,16.5,11,16.5,11,16.5,11,11,11,16.5,16.5,16.5,16.5,14.3,11,16.5,11,11,14.3,11],"iconAnchorX":[105,95,65,-20,-10,-20,-5,-20,65,105,-10,175,85,65,85,-20,95,-10,55,105,65,105],"iconAnchorY":[10,10,10,-5,10,-15,-10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]},null,null,{"clickable":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>","<a href='http://glottolog.org/resource/languoid/iso/kbd' target='_blank'>Kabardian\u003c/a><br>"],null,null]}],"limits":{"lat":[43.863056,45.054167],"lng":[39.946389,41.935]}},"evals":[],"jsHooks":[]}</script>
+<p>Конечно, местами все не так красиво, все основные проблемы сейчас в аргументе <code>image.height</code> однако в общем цель достигнута.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
